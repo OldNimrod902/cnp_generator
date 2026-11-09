@@ -4,8 +4,66 @@ using namespace std;
 
 bool closeProgram = false;
 
+char counties[53][30] = {
+    "0",
+    "Alba",
+    "Arad",
+    "Arges",
+    "Bacau",
+    "Bihor",
+    "Bistrita-Nasaud",
+    "Botosani",
+    "Brasov",
+    "Braila",
+    "Buzau",
+    "Caras-Severin",
+    "Cluj",
+    "Constanta",
+    "Covasna",
+    "Dambovita",
+    "Dolj",
+    "Galati",
+    "Gorj",
+    "Harghita",
+    "Hunedoara",
+    "Ialomita",
+    "Iasi",
+    "Ilfov",
+    "Maramures",
+    "Mehedinti",
+    "Mures",
+    "Neamt",
+    "Olt",
+    "Prahova",
+    "Satu Mare",
+    "Salaj",
+    "Sibiu",
+    "Suceava",
+    "Teleorman",
+    "Timis",
+    "Tulcea",
+    "Vaslui",
+    "Valcea",
+    "Vrancea",
+    "Bucuresti",
+    "Bucuresti S.1",
+    "Bucuresti S.2",
+    "Bucuresti S.3",
+    "Bucuresti S.4",
+    "Bucuresti S.5",
+    "Bucuresti S.6",
+    "47",
+    "48",
+    "49",
+    "50",
+    "Calarasi",
+    "Giurgiu"
+};
+
+
 void getCNPDetails(long long cnp) {
     int S, AA, LL, ZZ, JJ, NNN;
+
     cnp /= 10;
     NNN = cnp % 1000;
     cnp /= 1000;
@@ -18,7 +76,14 @@ void getCNPDetails(long long cnp) {
     AA = cnp % 100;
     cnp /= 100;
     S = cnp % 10;
-
+    cout << "Gender: " << (S % 2 == 0 ? "Female" : "Male") << endl;
+    cout << "Date of Birth: ";
+    if (S == 1 || S == 2) cout << "19";
+    else if (S == 3 || S == 4) cout << "18";
+    else if (S == 5 || S == 6) cout << "20";
+    cout << AA << "/" << LL << "/" << ZZ << endl;
+    cout << "County: " << counties[JJ] << endl;
+    cout << "Serial Number: " << NNN << endl;
 }
 
 
@@ -88,7 +153,14 @@ void mainmenu() {
         }
     }
     else if (option == 4) {
-        cout << "soon";
+        long long cnp;
+        cout << "Enter CNP to get details: ";
+        cin >> cnp;
+        if (isCNPvalid(cnp)) {
+            getCNPDetails(cnp);
+        } else {
+            cout << "The entered CNP is invalid." << endl;
+        }
     }
     else if (option == 5) {
         aboutCNP();
