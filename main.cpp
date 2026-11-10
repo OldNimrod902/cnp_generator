@@ -86,9 +86,100 @@ void getCNPDetails(long long cnp) {
     cout << "Serial Number: " << NNN << endl;
 }
 
+bool dayChecker(int year, int month, int day) {
+    if (day < 1 || day > 31) return false;
+    if (month == 2) {
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            return day <= 29;
+        } else {
+            return day <= 28;
+        }
+    }
+    if (month == 4 || month == 6 || month == 9 || month == 11) {
+        return day <= 30; 
+    }
+    return true;
+}
+
+int returnCheckDigit(long long cnp) {
+    int constants[12] = {2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7, 9};
+    int checkDigit = 0;
+
+    for(int i = 11; i >= 0 ; i--) {
+        checkDigit += (cnp%10)*constants[i];
+        cnp/=10;
+    }
+    checkDigit %= 11;
+    if(checkDigit == 10) checkDigit = 1;
+    return checkDigit;
+}
 
 void generateCNP() {
+    int year, century, YY, MM, DD, JJ, NNN;
+    char gender, affirmation;
+    cout << "+== GENERATE CNP ======================+" << endl;
+    
+    do {
+        cout << "Enter the birth year of the person: ";
+        cin >> year;
+    } while(year < 1800 || year > 2099);
+    
+    if(year>1999) {
+        century = 5;
+    }
+    else if(year>1899) {
+        century = 1;
+    }
+    else {
+        century = 3;
+    }
 
+    YY = year % 100;
+
+    do {
+        cout << "Enter the birth month of the person: ";
+    cin >> MM;
+    } while(MM < 1 || MM > 12);
+    
+    do {
+        cout << "Enter the birth day of the person: ";
+        cin >> DD;
+    } while(!dayChecker(year, MM, DD));
+
+    do {
+        cout << "Enter the gender of the person [M/F]: ";
+        cin >> gender;
+    } while(gender != 'M' && gender != 'm' && gender != 'F' && gender != 'f');
+
+    if(gender == 'F' || gender == 'f') century++;
+    do {
+        cout << "Enter the county code of the person: ";
+        cin >> JJ;
+        cout << "You entered " << JJ << ", which is the code of " << counties[JJ] << ". Is this correct? [Y/N]: ";
+        cin >> affirmation;
+    } while(affirmation == 'N' || affirmation == 'n');
+
+    do {
+        cout << "Enter the serial number of the person (NNN): ";
+        cin >> NNN;
+    } while(NNN < 1 || NNN > 999);
+
+
+    long long cnp;
+    cnp = century;
+    cnp *= 100;
+    cnp += YY;
+    cnp *= 100;
+    cnp += MM;
+    cnp *= 100;
+    cnp += DD;
+    cnp *= 100;
+    cnp += JJ;
+    cnp *=1000;
+    cnp += NNN;
+    cnp = cnp*10 + returnCheckDigit(cnp);
+    
+    cout << "The generated CNP is " << cnp << endl << endl;
 }
 
 void generateRandomCNP() {
