@@ -117,6 +117,7 @@ int returnCheckDigit(long long cnp) {
 void generateCNP() {
     int year, century, YY, MM, DD, JJ, NNN;
     char gender, affirmation;
+    srand(time(0));
     cout << "+== GENERATE CNP ======================+" << endl;
     
     do {
@@ -160,10 +161,12 @@ void generateCNP() {
     } while(affirmation == 'N' || affirmation == 'n');
 
     do {
-        cout << "Enter the serial number of the person (NNN): ";
+        cout << "Enter a serial number for the person (000-999). Enter 0 for random number: ";
         cin >> NNN;
-    } while(NNN < 1 || NNN > 999);
-
+    } while(NNN < 0 || NNN > 999);
+    if(NNN == 0) {
+        NNN = rand() % 1000;
+    }
 
     long long cnp;
     cnp = century;
@@ -183,6 +186,34 @@ void generateCNP() {
 }
 
 void generateRandomCNP() {
+    cout << "+== GENERATE CNP RANDOMLY =============+" << endl;
+    srand(time(0));
+    cout << "How many CNPs do you want to generate? ";
+    int amount;
+    cin >> amount;
+    long long cnp;
+    cout << "Generated CNPs: " << endl;
+    for(int i = 0; i < amount; i++) {
+        int YY = rand() % 100;
+        int MM = rand() % 12 + 1;
+        int DD = rand() % 27 + 1;
+        int S = rand() % 6 + 1;
+        int JJ = rand() % 46 + 1;
+        int NNN = rand() % 1000;
+        cnp = S;
+        cnp *= 100;
+        cnp += YY;
+        cnp *= 100;
+        cnp += MM;
+        cnp *= 100;
+        cnp += DD;
+        cnp *= 100;
+        cnp += JJ;
+        cnp *=1000;
+        cnp += NNN;
+        cnp = cnp*10 + returnCheckDigit(cnp);
+        cout << cnp << endl;
+    }
 
 }
 bool isCNPvalid(long long cnp) {
