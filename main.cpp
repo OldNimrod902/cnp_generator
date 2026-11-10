@@ -116,7 +116,7 @@ int returnCheckDigit(long long cnp) {
 
 void generateCNP() {
     int year, century, YY, MM, DD, JJ, NNN;
-    char gender, affirmation;
+    char gender, affirmation, JJName[30];
     srand(time(0));
     cout << "+== GENERATE CNP ======================+" << endl;
     
@@ -153,12 +153,27 @@ void generateCNP() {
     } while(gender != 'M' && gender != 'm' && gender != 'F' && gender != 'f');
 
     if(gender == 'F' || gender == 'f') century++;
-    do {
-        cout << "Enter the county code of the person: ";
-        cin >> JJ;
-        cout << "You entered " << JJ << ", which is the code of " << counties[JJ] << ". Is this correct? [Y/N]: ";
-        cin >> affirmation;
-    } while(affirmation == 'N' || affirmation == 'n');
+
+    cout << "Enter the name of the county of the person\nIf you would rather enter the county code, enter \"code\": ";
+    cin.ignore();
+    cin.getline(JJName, 30);
+    if(strcmp(JJName, "code")==0) {
+        do {
+            cout << "Enter the county code of the person: ";
+            cin >> JJ;
+            cout << "You entered " << JJ << ", which is the code of " << counties[JJ] << ". Is this correct? [Y/N]: ";
+            cin >> affirmation;
+        } while(affirmation == 'N' || affirmation == 'n');
+    }
+    else {
+        for (int i = 1; i < 53; i++)
+        {
+            if(strcmp(JJName, counties[i])==0) {
+                JJ=i;
+            }
+        }
+        
+    }
 
     do {
         cout << "Enter a serial number for the person (000-999). Enter 0 for random number: ";
@@ -252,6 +267,7 @@ void mainmenu() {
     cout << "[3] Verify CNP" << endl;
     cout << "[4] Get data from CNP" << endl;
     cout << "[5] About CNP" << endl;
+    cout << "[6] County codes list" << endl;
     cout << "+======================================+" << endl;
     cout << "[0] Close the app" << endl;
     cout << "+======================================+" << endl;
@@ -287,6 +303,16 @@ void mainmenu() {
     else if (option == 5) {
         aboutCNP();
     }
+    else if (option == 6) {
+        cout << "+== COUNTY CODES ======================+" << endl;
+        for(int i = 1; i <= 46; i++) {
+            cout << "[";
+            if (i < 10) cout << "0";
+            cout << i << "] " << counties[i] << endl;
+        }
+        cout << "[51] Calarasi" << endl;
+        cout << "[52] Giurgiu" << endl;
+    }
     else if (option == 0) {
         cout << "Closing..." << endl;
         closeProgram = true;
@@ -296,6 +322,9 @@ void mainmenu() {
         cout << "Invalid option. Please try again." << endl;
         mainmenu();
     }
+    cout << "Press enter to return to the main menu" << endl;
+    cin.ignore();
+    cin.get();
 }
 
 int main() {
