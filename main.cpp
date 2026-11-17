@@ -3,6 +3,7 @@
 using namespace std;
 
 bool closeProgram = false;
+ofstream save("export.txt");
 
 char counties[53][30] = {
     "0",
@@ -224,16 +225,32 @@ void generateCNP() {
 void generateRandomCNP() {
     cout << "+== GENERATE CNP RANDOMLY =============+" << endl;
     srand(time(0));
+    char answer;
+    bool export_cnp=false;
+
     cout << "How many CNPs do you want to generate? ";
     int amount;
     cin >> amount;
+
+    cout << "Would you like to export the generated CNPs? [Y/N]" << endl;
+    cin >> answer;
+    if(answer == 'Y' || answer == 'y') export_cnp=true;
+    if(export_cnp) save << "Exported " << amount << " CNPs: " << endl;
+
     long long cnp;
+    
     cout << "Generated CNPs: " << endl;
     for(int i = 0; i < amount; i++) {
-        int YY = rand() % 100;
-        int MM = rand() % 12 + 1;
-        int DD = rand() % 27 + 1;
         int S = rand() % 6 + 1;
+        int YY;
+        int DD;
+        if(S==5 || S==6) YY = rand() % 26;
+        else YY = rand() % 100;
+        int MM = rand() % 12 + 1;
+        if(MM==1 || MM==3 || MM==5 || MM==7 || MM==8 || MM==10 || MM==12) DD = rand() % 30 + 1;
+        else if(MM==2) DD = rand() % 29 + 1;
+        else if (YY%4 != 0) DD = rand() % 27 + 1;
+        else DD = rand() % 18 + 1;
         int JJ = rand() % 46 + 1;
         int NNN = rand() % 1000;
         cnp = S;
@@ -249,6 +266,7 @@ void generateRandomCNP() {
         cnp += NNN;
         cnp = cnp*10 + returnCheckDigit(cnp);
         cout << cnp << endl;
+        if(export_cnp) save << cnp << endl;
     }
 
 }
@@ -307,6 +325,13 @@ void mainmenu() {
         cin >> cnp;
         if (isCNPvalid(cnp)) {
             cout << "The entered CNP is valid." << endl;
+
+            cout << "Do you want to get details from this CNP? [Y/N]: ";
+            char choice;
+            cin >> choice;
+            if(choice == 'y' || choice == 'Y') {
+                getCNPDetails(cnp);
+            }
         } else {
             cout << "The entered CNP is invalid." << endl;
         }
