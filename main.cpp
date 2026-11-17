@@ -294,7 +294,19 @@ bool isCNPvalid(long long cnp) {
 }
 
 void aboutCNP() {
-
+    cout << "+== ABOUT CNP =========================+" << endl << endl;
+    cout << "A CNP is a 13 digit number that every Romanian citizen has." << endl;
+    cout << "It is generated based on the persons birth date, birth place, and gender." << endl;
+    cout << "It is made up based on the following formula:" << endl;
+    cout << "SYYMMDDJJNNNC, where; " << endl;
+    cout << "S - contains the person's gender and century of birth (e.g. 5 means a man born in 2000-2100)" << endl;
+    cout << "YY - contains the last 2 digits of the birth year" << endl;
+    cout << "MM - contains the birth month" << endl;
+    cout << "DD - contains the birth day" << endl;
+    cout << "JJ - contains the birth county (\"Judet\") of the person" << endl;
+    cout << "NNN - differentiates those born on the same date, place and gender" << endl;
+    cout << "C - check digit, that makes it easy to check if the CNP is correct based on an algorithm" << endl;
+    cout << "So every person has a unique one, used in daily life for administrative things." << endl;
 }
 
 void mainmenu() {
