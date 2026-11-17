@@ -117,13 +117,16 @@ int returnCheckDigit(long long cnp) {
 void generateCNP() {
     int year, century, YY, MM, DD, JJ, NNN;
     char gender, affirmation, JJName[30];
+    bool foundByName=false;
     srand(time(0));
     cout << "+== GENERATE CNP ======================+" << endl;
     
-    do {
-        cout << "Enter the birth year of the person: ";
+    cout << "Enter the birth year of the person: ";
+    cin >> year;
+    while(year < 1800 || year > 2099) {
+        cout << "Invalid year. Please enter a year between 1800 and 2099: ";
         cin >> year;
-    } while(year < 1800 || year > 2099);
+    }
     
     if(year>1999) {
         century = 5;
@@ -137,20 +140,26 @@ void generateCNP() {
 
     YY = year % 100;
 
-    do {
-        cout << "Enter the birth month of the person: ";
+    cout << "Enter the birth month of the person: ";
     cin >> MM;
-    } while(MM < 1 || MM > 12);
+    while(MM < 1 || MM > 12) {
+        cout << "Invalid month. Please enter a month between 1 and 12: ";
+        cin >> MM;
+    }
     
-    do {
-        cout << "Enter the birth day of the person: ";
+    cout << "Enter the birth day of the person: ";
+    cin >> DD;
+    while(!dayChecker(year, MM, DD)) {
+        cout << "Invalid day. Please enter a valid day: ";
         cin >> DD;
-    } while(!dayChecker(year, MM, DD));
+    }
 
-    do {
-        cout << "Enter the gender of the person [M/F]: ";
+    cout << "Enter the gender of the person [M/F]: ";
+    cin >> gender;
+    while(gender != 'M' && gender != 'm' && gender != 'F' && gender != 'f') {
+        cout << "Invalid gender. Please enter M for male or F for female: ";
         cin >> gender;
-    } while(gender != 'M' && gender != 'm' && gender != 'F' && gender != 'f');
+    }
 
     if(gender == 'F' || gender == 'f') century++;
 
@@ -170,6 +179,18 @@ void generateCNP() {
         {
             if(strcmp(JJName, counties[i])==0) {
                 JJ=i;
+                foundByName=true;
+            }
+        }
+        while(!foundByName) {
+            cout << "County not found. Please enter a valid county name: ";
+            cin.getline(JJName, 30);
+            for (int i = 1; i < 53; i++)
+            {
+                if(strcmp(JJName, counties[i])==0) {
+                    JJ=i;
+                    foundByName=true;
+                }
             }
         }
         
